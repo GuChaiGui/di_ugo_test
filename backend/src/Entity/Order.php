@@ -29,7 +29,7 @@ class Order
     #[ORM\Column(length: 10)]
     private ?string $currency = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
