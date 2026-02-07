@@ -37,7 +37,7 @@ class UgoOrdersImportCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $csvDir = __DIR__ . '/../../data/';
+        $csvDir = __DIR__ . '/../../import/';
         $customersFile = $csvDir . 'customers.csv';
         $ordersFile = $csvDir . 'purchases.csv';
 
