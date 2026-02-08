@@ -1,0 +1,57 @@
+.app-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* LOGO */
+.logo {
+  position: absolute;
+  transition: transform 0.45s ease, opacity 0.45s ease;
+}
+
+.logo img {
+  height: 70px;      /* taille fixe, non étirée */
+  width: auto;       /* empêche l'étirement */
+  object-fit: contain;
+}
+
+.logo-hide {
+  transform: translateY(-160%);
+  opacity: 0;
+}
+
+/* CUSTOMERS */
+.menu {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #BD9975;
+  transform: translateY(-160%);
+  opacity: 0;
+  transition: transform 0.45s ease, opacity 0.45s ease;
+}
+
+.menu-show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* CONTENT */
+.app-content {
+  padding-top: 160px;
+}
+
+.nav-link {
+  text-decoration: none;     
+  color: #BD9975;
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+}
