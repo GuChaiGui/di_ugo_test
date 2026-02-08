@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCustomers, Customer } from "../api/customers";
+import { getCustomers } from "../api/customers_api";
+import type { Customer } from "../api/customers_api";
+
 
 export default function CustomersPage() {
   // Store the list of customers retrieved from the backend
