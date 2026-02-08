@@ -14,22 +14,22 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $purchaseIdentifier = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     private ?int $productId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     private ?int $quantity = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     private ?float $price = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: false)]
     private ?string $currency = null;
 
-    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE, nullable: false)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
