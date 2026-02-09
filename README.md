@@ -139,6 +139,36 @@ DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
 # 🗄 5. Base de données & migrations
 
+## 📊 Schéma de la base de données
+
+```mermaid
+erDiagram
+    CUSTOMER {
+        int id
+        int customer_id
+        string title
+        string lastname
+        string firstname
+        string postal_code
+        string city
+        string email
+    }
+
+    ORDER {
+        int id
+        string purchase_identifier
+        int product_id
+        int quantity
+        float price
+        string currency
+        datetime date
+        int customer_id
+    }
+
+    CUSTOMER ||--o{ ORDER : "possède"
+
+```
+
 Créer la base et appliquer les migrations :
 
 
