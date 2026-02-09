@@ -1,27 +1,42 @@
 .customers-page {
-  padding: 2rem;
+  padding-top: 40px; /* rapproche le titre du haut */
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
 
+  /* TITRE DE LA PAGE */
   .page-title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-top: 0;          /* remonte le titre */
+    margin-bottom: 1.5rem;  /* espace avec la table */
+    color: #2b2b2b;
+    font-family: "Poppins", sans-serif;
   }
 
+  /* BOUTON ORDERS DANS LA TABLE */
   .btn-orders {
-    padding: 0.4rem 0.8rem;
-    background: #0078ff;
+    padding: 0.45rem 1rem;
+    background: #BD9975; /* couleur du logo */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.25s ease, transform 0.2s ease;
 
     &:hover {
-      background: #005fcc;
+      background: #a88363;
+      transform: translateY(-2px);
     }
   }
 
+  /* LOADER */
   .loading {
     font-size: 1.2rem;
     padding: 2rem;
+    text-align: center;
   }
 }

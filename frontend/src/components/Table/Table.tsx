@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./Table.scss";
 
 export interface Column<T> {
@@ -9,36 +10,57 @@ export interface Column<T> {
 interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
+  pageSize?: number;
 }
 
-export default function Table<T>({ columns, data }: TableProps<T>) {
+export default function Table<T>({ columns, data, pageSize = 5 }: TableProps<T>) {
+  const [page, setPage] = useState(1);
+
+  const totalPages = Math.ceil(data.length / pageSize);
+  const start = (page - 1) * pageSize;
+  const currentData = data.slice(start, start + pageSize);
+
   return (
     <div className="table-wrapper">
-      <table className="table">
-        <thead>
-          <tr>
-            {columns.map((col, index) => (
-              <th key={`header-${index}`}>{col.label}</th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.map((row, rowIndex) => (
-            <tr key={`row-${rowIndex}`}>
-              {columns.map((col, colIndex) => {
-                const value = row[col.key];
-
-                return (
-                  <td key={`cell-${rowIndex}-${colIndex}`}>
-                    {col.render ? col.render(value, row) : value ?? "—"}
-                  </td>
-                );
-              })}
+      <div className="table-container">
+        <table className="table">
+          <thead>
+            <tr>
+              {columns.map((col, index) => (
+                <th key={`header-${index}`}>{col.label}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {currentData.map((row, rowIndex) => (
+              <tr key={`row-${rowIndex}`}>
+                {columns.map((col, colIndex) => {
+                  const value = row[col.key];
+                  return (
+                    <td key={`cell-${rowIndex}-${colIndex}`}>
+                      {col.render ? col.render(value, row) : value ?? "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* PAGINATION */}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={`page-btn ${page === i + 1 ? "active" : ""}`}
+            onClick={() => setPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
