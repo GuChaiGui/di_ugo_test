@@ -45,7 +45,7 @@ export default function Table<T>({
                   const value = row[col.key];
                   return (
                     <td key={`cell-${rowIndex}-${colIndex}`}>
-                      {col.render ? col.render(value, row) : value ?? "—"}
+                      {col.render ? col.render(value, row) : String(value ?? "—")}
                     </td>
                   );
                 })}
