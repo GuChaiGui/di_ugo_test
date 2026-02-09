@@ -20,6 +20,7 @@ class OrderController extends AbstractController
         }
 
         $data = array_map(fn($o) => [
+            'last_name' => $customer->getLastname(),
             'purchase_identifier' => $o->getPurchaseIdentifier(),
             'product_id' => $o->getProductId(),
             'quantity' => $o->getQuantity(),
