@@ -366,7 +366,6 @@ php bin/console doctrine:migrations:migrate
 # placer customers.csv et purchases.csv
 php bin/console ugo:orders:import
 symfony serve
-php bin/phpunit
 ```
 
 ## Frontend
