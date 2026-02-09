@@ -8,14 +8,21 @@
 
 /* CONTENEUR RESPONSIVE */
 .table-container {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 1rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.209); /* transparence élégante */
+  backdrop-filter: blur(12px);           /* effet verre dépoli */
+  -webkit-backdrop-filter: blur(12px);   /* support iOS */
 
-  /* RESPONSIVE SCROLL */
+  border-radius: 16px;
+  padding: 1.2rem;
+
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.23),     /* ombre douce */
+    0 4px 12px rgba(0, 0, 0, 0.04);      /* deuxième ombre premium */
+
+  border: 1px solid rgba(255, 255, 255, 0.4); /* bordure translucide */
+
   overflow-x: auto;
+  display: flex;
 }
 
 /* TABLEAU */
