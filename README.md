@@ -38,6 +38,7 @@ Ce README décrit l’installation, l’architecture, les commandes disponibles,
 11. Tests frontend  
 12. Notes importantes  
 13. Résumé rapide d’installation
+14. Piste d'améliorations
 
 ---
 
@@ -319,8 +320,10 @@ Tests inclus :
 
 Lancer :
 
-Code
-
+```
+npm run test:e2e
+```
+ou en mode visuel
 ```
 npx playwright test --headed
 ```
@@ -335,7 +338,7 @@ Le test E2E vérifie :
     
 -   pagination fonctionnelle
 
-# ⚙️ Notes importantes
+# ⚙️ 12. Notes importantes
 
 -   `var/` et `vendor/` sont ignorés dans Git
     
@@ -350,7 +353,7 @@ Le test E2E vérifie :
 -   le backend doit tourner avant le frontend
     
 
-# 🚀Installation Rapide
+# 🚀 13. Installation Rapide
 
 ## Backend
 
@@ -365,3 +368,27 @@ php bin/console ugo:orders:import
 symfony serve
 php bin/phpunit
 ```
+
+## Frontend
+
+
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+Le frontend démarre sur :
+
+```
+http://localhost:5173
+```
+
+# 💡 14. Piste d'améliorations
+
+-   **Optimiser l’import CSV**  avec un système de batch (flush/clear) pour améliorer les performances et réduire la consommation mémoire.
+    
+-   **Ajouter des index en base**  (ex. sur `customer_id`) afin d’accélérer les recherches et rendre l’import plus scalable.
+- **Améliorer la robustesse de l’import** via une validation des données (email, date, prix, quantité) et une gestion d’erreurs plus fine.
+-  **Conteneurisation complète (Docker multi‑services)** Mettre backend + frontend + base SQLite/PostgreSQL dans un docker-compose reproductible.  ➡️ avec `docker compose up`, tout tourne identique partout.
