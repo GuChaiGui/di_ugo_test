@@ -11,14 +11,20 @@ interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
   pageSize?: number;
+  pagination?: boolean; // ✅ AJOUT
 }
 
-export default function Table<T>({ columns, data, pageSize = 5 }: TableProps<T>) {
+export default function Table<T>({
+  columns,
+  data,
+  pageSize = 5,
+  pagination = true, // pagination activée par défaut
+}: TableProps<T>) {
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(data.length / pageSize);
   const start = (page - 1) * pageSize;
-  const currentData = data.slice(start, start + pageSize);
+  const currentData = pagination ? data.slice(start, start + pageSize) : data;
 
   return (
     <div className="table-wrapper">
@@ -50,17 +56,19 @@ export default function Table<T>({ columns, data, pageSize = 5 }: TableProps<T>)
       </div>
 
       {/* PAGINATION */}
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            className={`page-btn ${page === i + 1 ? "active" : ""}`}
-            onClick={() => setPage(i + 1)}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
+      {pagination && (
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              className={`page-btn ${page === i + 1 ? "active" : ""}`}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

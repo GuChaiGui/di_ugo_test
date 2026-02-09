@@ -32,6 +32,7 @@ export default function CustomersPage() {
             { key: "title", label: "Title" },
             { key: "lastname", label: "Lastname" },
             { key: "firstname", label: "Firstname" },
+            { key: "postal_code", label: "Postal Code" },
             { key: "city", label: "City" },
             { key: "email", label: "Email" },
             {

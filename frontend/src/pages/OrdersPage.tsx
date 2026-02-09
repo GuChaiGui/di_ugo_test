@@ -11,43 +11,60 @@ export default function OrdersPage() {
     const navigate = useNavigate();
 
     const [orders, setOrders] = useState<Order[]>([]);
+
+    // total of price per currency
+    const totalsByCurrency = orders.reduce((acc, o) => {
+        if (!acc[o.currency]) acc[o.currency] = 0;
+        acc[o.currency] += o.price * o.quantity;
+        return acc;
+    }, {} as Record<string, number>);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!id) return;
+      if (!id) return;
 
-        getOrdersByCustomer(Number(id))
+      getOrdersByCustomer(Number(id))
         .then(setOrders)
         .finally(() => setLoading(false));
     }, [id]);
 
-    // loading logo
     if (loading) return <Loader />;
 
-
     return (
-        <main className="orders-page">
+      <main className="orders-page">
         <button className="btn-back" onClick={() => navigate(-1)}>
-            ← Back
+          ← Back
         </button>
 
         <h1 className="page-title">Orders for customer #{id}</h1>
 
         <Table
-            columns={[
+          columns={[
+            { key: "last_name", label: "Last Name" },
             { key: "purchase_identifier", label: "Purchase ID" },
             { key: "product_id", label: "Product ID" },
             { key: "quantity", label: "Qty" },
             { key: "price", label: "Price" },
             { key: "currency", label: "Currency" },
             {
-                key: "date",
-                label: "Date",
-                render: (value) => new Date(value).toLocaleDateString(),
+              key: "date",
+              label: "Date",
+              render: (value) => new Date(value).toLocaleDateString(),
             },
-            ]}
-            data={orders}
+          ]}
+          data={orders}
+          pagination={false} // PAS DE PAGINATION
         />
-        </main>
+
+        <div className="orders-total">
+            {Object.entries(totalsByCurrency).map(([currency, total]) => (
+                <div key={currency}>
+                Total ({currency}) : <strong>{total.toFixed(2)} {currency}</strong>
+                </div>
+            ))}
+        </div>
+
+      </main>
     );
 }
