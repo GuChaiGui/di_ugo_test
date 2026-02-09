@@ -5,16 +5,23 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "types": ["vite/client"],
+
+    /* Types nécessaires pour Jest + Testing Library */
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
+
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* Bundler mode (Vite) */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
     "noEmit": true,
+
+    /* ESSENTIEL pour Jest : activer JSX */
     "jsx": "react-jsx",
+
+    /* Évite les warnings ts-jest */
     "esModuleInterop": true,
 
     /* Linting */
