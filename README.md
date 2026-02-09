@@ -4,7 +4,7 @@
 Ce projet est une application complète composée :
 
 - **d’un backend Symfony 6.4** permettant d’importer des données clients/commandes depuis des fichiers CSV et d’exposer une API REST,
-- **d’un frontend React + TypeScript** permettant d’afficher les clients et leurs commandes.
+- **d’un frontend React + TypeScript** permettant d’afficher les clients, leurs commandes, la pagination et les totaux multi‑devises.
 
 Ce README décrit l’installation, l’architecture, les commandes disponibles, l’API, les tests, ainsi que le fonctionnement global du projet.
 
@@ -41,38 +41,41 @@ Ce README décrit l’installation, l’architecture, les commandes disponibles,
 
 ---
 
-# 🧩 Présentation du projet
+# 🧩 1. Présentation du projet
 
 L’objectif du test technique est de :
 
-- importer des **clients** et leurs **commandes** depuis deux fichiers CSV,
-- stocker ces données en base via Doctrine,
-- exposer une **API REST** permettant de récupérer les clients et leurs commandes,
-- afficher ces données dans une interface **React + TypeScript**,
-- proposer un affichage clair, paginé, et une navigation simple.
+-   importer des **clients** et leurs **commandes** depuis deux fichiers CSV,
+-   stocker ces données en base via Doctrine,
+-   exposer une **API REST** permettant de récupérer les clients et leurs commandes,
+-   afficher ces données dans une interface **React + TypeScript**,
+-   proposer un affichage clair, paginé, avec navigation et totaux multi‑devises.
 
 Le projet est conçu pour être **simple à installer**, **facile à lire**, et **proprement structuré**.
 
 ---
 
-# 🛠 Technologies utilisées
+# 🛠 2. Technologies utilisées
 
 ## Backend
 - Symfony **6.4**
 - PHP **8.2**
 - Doctrine ORM
-- SQLite (par défaut)
-- Symfony Console (commande d’import)
+- SQLite 
+- Symfony Console 
 - PHPUnit (tests)
 
 ## Frontend
-- React
-- TypeScript
+-   React 18
+-   TypeScript
+-   Vite
+-   Jest + React Testing Library
+-   Playwright (tests E2E)
 
 
 ---
 
-# 📁 Architecture du repository
+# 📁 3. Architecture du repository
 
 ```
 di_ugo_test/
@@ -98,9 +101,16 @@ di_ugo_test/
 │   └── symfony.lock
 │
 └── frontend/
+    ├── src/
+    ├── public/
+    ├── tests/
+    ├── vite.config.ts
+    ├── jest.config.cjs
+    ├── package.json
+    └── tsconfig.json
 ```
 
-# 🔧 Installation du backend Symfony
+# 🔧 4. Installation du backend Symfony
 
 ## 1. Cloner le projet
 
@@ -111,7 +121,6 @@ di_ugo_test/
 
 ```
 composer install
-
 ```
 
 ## 3. Configurer l’environnement
@@ -127,24 +136,22 @@ Par défaut, la base SQLite est :
 DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 ```
 
-# 🗄 Base de données & migrations
+# 🗄 5. Base de données & migrations
 
 Créer la base et appliquer les migrations :
 
 
 ```
 php bin/console doctrine:migrations:migrate
-
 ```
 
 La base SQLite est créée dans :
 
 ```
 backend/var/data.db
-
 ```
 
-# 📥 Import des fichiers CSV
+# 📥 6	. Import des fichiers CSV
 
 ## 1. Placer les fichiers CSV
 
@@ -159,7 +166,6 @@ backend/var/import/purchases.csv
 
 ```
 php bin/console ugo:orders:import
-
 ```
 
 La commande :
@@ -173,7 +179,18 @@ La commande :
 -   affiche un résumé en console.
     
 
-# 🌐 API REST disponible
+# 🌐 7. API REST disponible
+## Lancer le backend :
+```
+symfony serve
+```
+
+Le backend sera disponible sur :
+
+
+```
+http://127.0.0.1:8000
+```
 
 ## GET /customers
 
@@ -206,7 +223,8 @@ Exemple :
 ```
 [
   {
-	"purchase_identifier": "1/01",
+	  "last_name": "Norris",
+		"purchase_identifier": "1/01",
     "product_id": 4324,
     "quantity": 1,
     "price": 7,
@@ -224,7 +242,7 @@ Vérifier que le backend fonctionne
 { "status": "ok" }
 ```
 
-# 🧪 Tests backend
+# 🧪 8. Tests backend
 
 Lancer les tests :
 
@@ -238,7 +256,84 @@ Tests inclus :
     
 -   CustomerApiTest → vérifie `/customers` et `/customers/{id}/orders`
     
+# ⚛️ 9. Installation du frontend React
+
+
+```
+cd ../frontend
+npm install
+npm run dev
+```
+
+Le frontend tourne sur :
+
+```
+http://localhost:5173
+```
+
+# 🖥️ 10. Fonctionnement du frontend
+
+Le frontend propose :
+
+-   une page **Customers** affichant la liste des clients,
     
+-   un clic sur un client ouvre la page **Orders**,
+    
+-   affichage des commandes avec :
+    
+    -   pagination,
+        
+    -   totaux multi‑devises,
+        
+    -   mise en forme claire,
+        
+-   composants réutilisables (Table, Pagination…),
+    
+-   code en TypeScript strict.
+    
+
+# 🧪 11. Tests frontend
+
+## ✔ Tests unitaires (Jest + React Testing Library)
+
+Lancer :
+
+Code
+
+```
+npm test
+```
+
+Tests inclus :
+
+-   affichage des colonnes
+    
+-   affichage des lignes
+    
+-   pagination activée/désactivée
+    
+-   navigation entre pages
+    
+
+## ✔ Tests E2E (Playwright)
+
+Lancer :
+
+Code
+
+```
+npx playwright test --headed
+```
+
+Le test E2E vérifie :
+
+-   chargement de la page Customers
+    
+-   clic sur un client
+    
+-   affichage de la page Orders
+    
+-   pagination fonctionnelle
 
 # ⚙️ Notes importantes
 
