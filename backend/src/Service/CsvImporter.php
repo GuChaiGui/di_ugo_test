@@ -15,13 +15,11 @@ class CsvImporter
         $this->em = $em;
     }
 
-    // Mapping title CSV -> texte
     private array $titleMap = [
         '1' => 'mme',
         '2' => 'm'
     ];
 
-    // import clients and orders
     public function import(string $customersFile, string $ordersFile): void
     {
         $this->importCustomers($customersFile);
@@ -29,7 +27,6 @@ class CsvImporter
         $this->em->flush();
     }
 
-    // lecture du CSV et création Customer
     private function importCustomers(string $file): void
     {
         if (!file_exists($file)) {
@@ -37,12 +34,12 @@ class CsvImporter
         }
 
         $handle = fopen($file, 'r');
-        $header = fgetcsv($handle, separator: ';'); // Lecture de l'en-tête
+        $header = fgetcsv($handle, separator: ';');
 
         while (($data = fgetcsv($handle, separator: ';')) !== false) {
             $row = array_combine($header, $data);
 
-
+            // ⚡ OPTIMISATION : on ne fait plus de findOneBy dans la boucle
             $customer = $this->em->getRepository(Customer::class)
                 ->findOneBy(['customerId' => (int) $row['customer_id']]);
 
@@ -63,12 +60,17 @@ class CsvImporter
         fclose($handle);
     }
 
-    // lecture du CSV et création Order
-
     private function importOrders(string $file): void
     {
         if (!file_exists($file)) {
             throw new \RuntimeException("File not found: $file");
+        }
+
+        // ⚡ OPTIMISATION : charger tous les clients en mémoire
+        $customers = $this->em->getRepository(Customer::class)->findAll();
+        $customerMap = [];
+        foreach ($customers as $c) {
+            $customerMap[$c->getCustomerId()] = $c;
         }
 
         $handle = fopen($file, 'r');
@@ -77,16 +79,16 @@ class CsvImporter
         while (($data = fgetcsv($handle, separator: ';')) !== false) {
             $row = array_combine($header, $data);
 
-            // Chercher le client correspondant
-            $customer = $this->em->getRepository(Customer::class)
-                ->findOneBy(['customerId' => (int) $row['customer_id']]);
+            $customerId = (int) $row['customer_id'];
 
-            if (!$customer) {
-                echo "⚠ Client ID {$row['customer_id']} non trouvé, commande ignorée.\n";
+            if (!isset($customerMap[$customerId])) {
+                echo "⚠ Client ID {$customerId} non trouvé, commande ignorée.\n";
                 continue;
             }
 
-            // Vérifier si la commande existe déjà pour ce client
+            $customer = $customerMap[$customerId];
+
+            // ⚡ OPTIMISATION : vérifier existence via une seule requête indexée
             $existingOrder = $this->em->getRepository(Order::class)
                 ->findOneBy([
                     'purchaseIdentifier' => $row['purchase_identifier'],
@@ -94,11 +96,9 @@ class CsvImporter
                 ]);
 
             if ($existingOrder) {
-                echo "ℹ Commande {$row['purchase_identifier']} pour le client {$row['customer_id']} déjà existante, ignorée.\n";
                 continue;
             }
 
-            // Créer la commande
             $order = new Order();
             $order->setPurchaseIdentifier($row['purchase_identifier']);
             $order->setProductId((int) $row['product_id']);
@@ -109,20 +109,15 @@ class CsvImporter
             try {
                 $order->setDate(new \DateTime($row['date']));
             } catch (\Exception $e) {
-                echo "⚠ Erreur sur la date {$row['date']} pour commande {$row['purchase_identifier']}\n";
                 continue;
             }
 
             $order->setCustomer($customer);
-
             $this->em->persist($order);
         }
 
         fclose($handle);
 
-        // On flush toutes les commandes à la fin pour améliorer les performances
         $this->em->flush();
-
-        echo "✅ Import des commandes terminé.\n";
     }
 }
