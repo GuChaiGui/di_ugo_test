@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import CustomersPage from "./pages/CustomersPage";
 import OrdersPage from "./pages/OrdersPage";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -13,6 +14,10 @@ export default function App() {
 
         {/* Route pour afficher les commandes d’un client */}
         <Route path="/customers/:id/orders" element={<OrdersPage />} />
+
+        {/* route 404  */}
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
     </Layout>
   );

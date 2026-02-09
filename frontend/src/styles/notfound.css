@@ -1,0 +1,25 @@
+.notfound-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.notfound-container h1 {
+  font-size: 6rem;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.btn-back {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.btn-back:hover {
+  background: #0056b3;
+}
